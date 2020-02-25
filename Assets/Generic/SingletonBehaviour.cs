@@ -2,7 +2,7 @@
 
 namespace Utils
 {
-    public class Singleton<T>
+    public class SingletonBehaviour<T> : MonoBehaviour where T : class
     {
         private static T instance;
         public static T Instance
@@ -15,12 +15,17 @@ namespace Utils
                     Debug.LogError($"Instance of {typeof(T).Name} not set.");
                 return default;
             }
-            set
+        }
+
+        protected void Awake()
+        {
+            if (instance == null)
+                instance = this as T;
+            else
             {
-                if (instance == null)
-                    instance = value;
-                else
-                    Debug.LogError($"Instance of {typeof(T).Name} is already set.");
+                Debug.LogError($"Instance of {typeof(T).Name} already set.");
+                Destroy(gameObject);
+                return;
             }
         }
     }
