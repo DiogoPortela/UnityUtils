@@ -1,31 +1,33 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
+namespace Utils.Menu
 {
-    public Slider loadingSlider;
-
-    public void StartGame()
+    public class MainMenu : MonoBehaviour
     {
-        StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
-    }
+        public Slider loadingSlider;
 
-    IEnumerator LoadScene(int sceneIndex)
-    {
-        var sceneLoadOperation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
-
-        while (!sceneLoadOperation.isDone)
+        public void StartGame()
         {
-            loadingSlider.value = Mathf.Clamp01(sceneLoadOperation.progress / 0.9f);
-            yield return null;
+            StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));
         }
-    }
 
-    public void QuitGame()
-    {
-        Application.Quit();
+        IEnumerator LoadScene(int sceneIndex)
+        {
+            var sceneLoadOperation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+
+            while (!sceneLoadOperation.isDone)
+            {
+                loadingSlider.value = Mathf.Clamp01(sceneLoadOperation.progress / 0.9f);
+                yield return null;
+            }
+        }
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
     }
 }
