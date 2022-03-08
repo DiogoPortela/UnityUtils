@@ -5,27 +5,32 @@ namespace Utils
     public class SingletonBehaviour<T> : MonoBehaviour where T : class
     {
         private static T instance;
-        public static T Instance
-        {
-            get
-            {
-                if (instance != null)
+        public static T Instance {
+            get {
+                if (instance != null) { 
                     return instance;
-                else
+                } else {
                     Debug.LogError($"Instance of {typeof(T).Name} not set.");
-                return default;
+                }
+                return null;
             }
         }
 
-        protected void Awake()
-        {
-            if (instance == null)
+        protected void Awake() {
+            if (instance == null) {
                 instance = this as T;
-            else
-            {
+                Debug.LogWarning($"Instance of {typeof(T).Name} set.");
+            } else {
                 Debug.LogError($"Instance of {typeof(T).Name} already set.");
                 Destroy(gameObject);
                 return;
+            }
+        }
+
+        protected void OnDestroy() {
+            if (instance == this as T) {
+                instance = null;
+                Debug.LogWarning($"Instance of {typeof(T).Name} destroyed.");
             }
         }
     }
